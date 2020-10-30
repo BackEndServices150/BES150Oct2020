@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+    api:
+        image: jeffrygonzalez/issues-api
+        ports: 
+            - 80:80
+        environment: 
+            - ConnectionStrings__issues=server=sql;user=sa;password=TokyoJoe138!;database=issues
+    sql:
+        image: jeffrygonzalez/issues-sql
+        ports:
+            - 1433:1433

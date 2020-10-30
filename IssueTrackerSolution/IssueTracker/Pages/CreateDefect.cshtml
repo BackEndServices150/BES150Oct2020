@@ -1,0 +1,38 @@
+﻿@page
+@model IssueTracker.Pages.CreateDefectModel
+@{
+    ViewData["Title"] = "Add A New Defect";
+}
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<h2>Create A Defect</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Defect.Description"></label>
+        <input class="form-control" asp-for="Defect.Description" />
+        <span asp-validation-for="Defect.Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Defect.OpenedBy"></label>
+        <input class="form-control" asp-for="Defect.OpenedBy" />
+        <span asp-validation-for="Defect.OpenedBy"></span>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Defect.Status"></label>
+        <select asp-for="Defect.Status" class="form-control">
+            <option></option>
+            <option value="Bug">Bug</option>
+            <option value="Important">Important</option>
+            <option value="Feature">Feature Request</option>
+            <option value="BackLog">Someday/Maybe</option>
+        </select>
+        <span asp-validation-for="Defect.Status"></span>
+
+    </div>
+    <button type="submit" class="btn btn-success">Add Defect</button>
+</form>

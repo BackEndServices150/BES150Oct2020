@@ -1,0 +1,33 @@
+﻿@page
+@model IssueTracker.Pages.DetailsModel
+@{
+}
+
+<h3>Details</h3>
+<form method="post">
+    @if (Model.Defect != null)
+    {
+        <h4>@Model.Defect.Description</h4>
+        <p>This defect was opened by @Model.Defect.OpenedBy. It is @Model.Defect.Status</p>
+        @if (!Model.Defect.Closed.HasValue)
+        {
+
+
+            <button class="btn btn-danger" asp-page-handler="Close" asp-route-id="@Model.Defect.Id">Close</button>
+
+        }
+        else
+        {
+            <p>This issue was closed on @Model.Defect.Closed.Value.ToShortDateString()</p>
+            <button class="btn btn-success" asp-page-handler="Open" asp-route-id="@Model.Defect.Id">Open Again</button>
+        }
+    }
+    else
+    {
+
+        <div class="alert alert-danger">
+            <h4>@Model.ErrorMessage</h4>
+            <a class="btn btn-danger" asp-page="Tracking">Go Back To List</a>
+        </div>
+    }
+</form>

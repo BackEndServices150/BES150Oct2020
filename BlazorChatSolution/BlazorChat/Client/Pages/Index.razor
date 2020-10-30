@@ -1,0 +1,63 @@
+﻿@page "/"
+@using BlazorChat.Shared
+@inject BlazorChat.Client.Services.HubService _hubService
+@inject HttpClient _httpClient
+
+<h1>Chat!</h1>
+
+<div>
+    <label>Who Are you:</label>
+    <input type="text" @bind="From" />
+</div>
+<div>
+    <textarea @bind="Message">
+
+</textarea>
+</div>
+<div>
+    <button class="btn btn-primary" @onclick="SendMessageAsync">Send</button>
+</div>
+
+<ul class="list-unstyled">
+    @foreach (var chat in Chats)
+    {
+        <li class="alert alert-info">
+            <p>At @chat.When.ToShortDateString() @chat.From said:</p>
+            <pre>@chat.Message</pre>
+        </li>
+
+    }
+    </ul>
+
+@code {
+    public string From { get; set; } = "Jeff";
+    public string Message { get; set; }
+    public List<ChatModel> Chats { get; set; } = new List<ChatModel>();
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        Chats = await _httpClient.GetFromJsonAsync<List<ChatModel>>("chats");
+        await _hubService.StartHub();
+
+        _hubService.OnChatReceived += (obj, chat) =>
+        {
+            Chats.Add(chat);
+            StateHasChanged();
+        };
+    }
+
+    public async Task SendMessageAsync()
+    {
+        var messageToSend = new ChatModel
+        {
+            From = From,
+            Message = Message,
+            When = DateTime.Now
+        };
+        Console.WriteLine(messageToSend);
+        // call the websocket and send the message here.
+        await _hubService.SendChat(messageToSend);
+        Message = "";
+    }
+}

@@ -1,0 +1,23 @@
+﻿
+@model List<Playlists.Data.PlayListItem>
+
+<h2>Your Playlist</h2>
+@foreach (var song in Model)
+{
+    <div class="alert alert-success">
+        <h3>@song.Title by @song.Artist </h3>
+        <p>You have played this song @song.PlayCount times.</p>
+        <div>
+            <form method="post" asp-action="IncrementPlaylist">
+                <input type="hidden" name="id" value="@song.Id" />
+                <button class="btn btn-sm btn-success">Add Play</button>
+            </form>
+        </div>
+    </div>
+} 
+
+@section Scripts {
+    <script>
+            // alert('Hello, World!');
+    </script>
+}

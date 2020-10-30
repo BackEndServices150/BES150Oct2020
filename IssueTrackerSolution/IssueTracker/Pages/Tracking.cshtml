@@ -1,0 +1,33 @@
+﻿@page
+@model IssueTracker.Pages.TrackingModel
+
+@{
+    ViewData["Title"] = "Your List of Defects";
+}
+
+<h2>Tracking!</h2>
+
+
+@foreach (var defect in Model.Defects)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@defect.Description</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@defect.Status</h6>
+            <p class="card-text">This was opened by @defect.OpenedBy on @defect.Created.ToShortDateString()</p>
+            <a asp-page="Details" asp-route-issueId="@defect.Id" class="card-link">View Details / Close Issue</a>
+        </div>
+    </div>
+
+}
+
+<a asp-page="CreateDefect" class="btn btn-primary">Add Defect</a>
+
+@section Header {
+    @if (TempData["flash"] != null)
+    {
+        <div class="alert alert-success">
+            <h3>@TempData["flash"]</h3>
+        </div>
+    }
+}
